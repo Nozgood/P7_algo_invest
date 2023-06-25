@@ -22,121 +22,45 @@ stock_twenty = {"name": "stock_twenty", "price": 114, "percentage": 18/100}
 all_stock = [
     stock_one,
     stock_two,
-    stock_three,
-    stock_four,
-    stock_five,
-    stock_six,
-    stock_seven,
-    stock_eight,
-    stock_nine,
-    stock_ten,
-    stock_eleven,
-    stock_twelve,
-    stock_thirteen,
-    stock_fourteen,
-    stock_fifteen,
-    stock_sixteen,
-    stock_seventeen,
-    stock_eighteen,
-    stock_nineteen,
-    stock_twenty
+    stock_three
 ]
 
 for stock in all_stock:
     benefit_two_years = stock["price"] * stock["percentage"]
-    stock["benefit_two_years"] = benefit_two_years
-
-stock_sum = 0
-all_stock_names = ""
-stock_benefits = 0
-
-all_stocks_combination = []
-
+    stock["benefits_two_years"] = benefit_two_years
 
 def checkStockSum(value: int) -> bool:
     if value > 500:
         return False
     return True
 
-# INSTANTANE
-for stock in all_stock:
-    stock_sum = stock["price"]
-    all_stock_names = stock["name"] 
-    if checkStockSum(stock_sum):
-        stock_benefits = stock["benefit_two_years"]
-    stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-    all_stocks_combination.append(stock_combination)
+def stock_recursive(stock, stock_list, final_list:None):
+    if final_list is None:
+        final_list = []
 
-    # INSTANTANE
-    for second_stock in all_stock:
-        if second_stock["name"] in all_stock_names:
-            continue
-        stock_sum = stock["price"] + second_stock["price"]
-        all_stock_names = stock["name"] + " " +  second_stock["name"] 
-        if checkStockSum(stock_sum):
-            stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"]
-        stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-        all_stocks_combination.append(stock_combination)
-
-        # INSTANTANE
-        for third_stock in all_stock:
-            if third_stock["name"] in all_stock_names:
-                continue
-            stock_sum = stock["price"] + second_stock["price"] + third_stock["price"]
-            all_stock_names = stock["name"] + " " +  second_stock["name"] + " " + third_stock["name"]
-            if checkStockSum(stock_sum):
-                stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"] + third_stock["benefit_two_years"]
-            stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-            all_stocks_combination.append(stock_combination)
-
-            # 100ms
-            for fourth_stock in all_stock:
-                if fourth_stock["name"] in all_stock_names:
-                    continue
-                stock_sum = stock["price"] + second_stock["price"] + third_stock["price"] + fourth_stock["price"]
-                all_stock_names = stock["name"] + " " +  second_stock["name"] + " " + third_stock["name"] + " " + fourth_stock["name"]
-                if checkStockSum(stock_sum):
-                    stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"] + third_stock["benefit_two_years"] + fourth_stock["benefit_two_years"]
-                stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-                all_stocks_combination.append(stock_combination)
-
-                # 2.5
-                for fifth_stock in all_stock:
-                    if fifth_stock["name"] in all_stock_names:
-                        continue
-                    stock_sum = stock["price"] + second_stock["price"] + third_stock["price"] + fourth_stock["price"] + fifth_stock["price"]
-                    if checkStockSum(stock_sum) is False:
-                        continue
-                    all_stock_names = stock["name"] + " " +  second_stock["name"] + " " + third_stock["name"] +" " + fourth_stock["name"] + " " + fifth_stock["name"]
-                    stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"] + third_stock["benefit_two_years"] + fourth_stock["benefit_two_years"] + fifth_stock["benefit_two_years"]
-                    stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-                    all_stocks_combination.append(stock_combination)
-
-                    # 20SEC
-                    for sixth_stock in all_stock:
-                        if sixth_stock["name"] in all_stock_names:
-                            continue
-                        stock_sum = stock["price"] + second_stock["price"] + third_stock["price"] + fourth_stock["price"] + fifth_stock["price"] + sixth_stock["price"]
-                        if checkStockSum(stock_sum) is False:
-                            continue
-                        all_stock_names = stock["name"] + " " +  second_stock["name"] + " " + third_stock["name"] + " " + fourth_stock["name"] + " " + fifth_stock["name"] + " " + sixth_stock["name"]
-                        stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"] + third_stock["benefit_two_years"] + fourth_stock["benefit_two_years"] + fifth_stock["benefit_two_years"] + sixth_stock["benefit_two_years"]
-                        stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-                        all_stocks_combination.append(stock_combination)
-
-                        # + 13 min
-                        for seventh_stock in all_stock:
-                            if seventh_stock["name"] in all_stock_names:
-                                continue
-                            stock_sum = stock["price"] + second_stock["price"] + third_stock["price"] + fourth_stock["price"] + fifth_stock["price"] + sixth_stock["price"] + seventh_stock["price"]
-                            if checkStockSum(stock_sum) is False:
-                                continue
-                            all_stock_names = stock["name"] + " " +  second_stock["name"] + " " + third_stock["name"] + " " + fourth_stock["name"] + " " + fifth_stock["name"] + " " + sixth_stock["name"] + " " + seventh_stock["name"]
-                            stock_benefits = stock["benefit_two_years"] + second_stock["benefit_two_years"] + third_stock["benefit_two_years"] + fourth_stock["benefit_two_years"] + fifth_stock["benefit_two_years"] + sixth_stock["benefit_two_years"] + seventh_stock["benefit_two_years"]
-                            stock_combination = {"sum": stock_sum, "names": all_stock_names, "benefits": stock_benefits}
-                            all_stocks_combination.append(stock_combination)
+    if len(stock_list) > 0:
+        stock_to_process = stock_list.pop(0)
+        if stock["name"] == stock_to_process["name"]:
+            return stock_recursive(stock, stock_list, final_list)
+        stock_process_price = stock["price"] + stock_to_process["price"]
+        if checkStockSum(stock_process_price) is False:
+            return stock_recursive(stock, stock_list, final_list)
+        stock_process_name = stock["name"] + " " + stock_to_process["name"]
+        stock_process_price = stock["price"] + stock_to_process["price"]
+        stock_process_benefits = stock["benefits_two_years"] + stock_to_process["benefits_two_years"]
+        stock_process = {
+            "final_name": stock_process_name,
+            "final_price": stock_process_price,
+            "final_benefits": stock_process_benefits
+            }
+        final_list.append(stock_process)
+        return stock_recursive(stock, stock_list, final_list)
+    else:
+        return final_list
 
 
-all_stocks_combination = sorted(all_stocks_combination, key= lambda combination: combination["benefits"], reverse= True)
 
-print(all_stocks_combination[0])
+for stock_test in all_stock:
+    all_stock_copy = all_stock.copy()
+    process = stock_recursive(stock_test, all_stock_copy, None)
+    print(process)
