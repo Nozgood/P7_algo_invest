@@ -22,7 +22,11 @@ stock_twenty = {"name": "stock_twenty", "price": 114, "percentage": 18/100}
 all_stock = [
     stock_one,
     stock_two,
-    stock_three
+    stock_three,
+    stock_four,
+    stock_five,
+    stock_six,
+    stock_seven
 ]
 
 for stock in all_stock:
@@ -34,19 +38,18 @@ def checkStockSum(value: int) -> bool:
         return False
     return True
 
-def stock_recursive(stock, stock_list, final_list:None):
+def stock_recursive(stock, stock_list, final_list:None, index):
     if final_list is None:
         final_list = []
 
-    if len(stock_list) > 0:
-        stock_to_process = stock_list.pop(0)
+    if index < len(stock_list):
+        stock_to_process = stock_list.pop(index)
         if stock["name"] == stock_to_process["name"]:
-            return stock_recursive(stock, stock_list, final_list)
+            return stock_recursive(stock, stock_list, final_list, index + 1)
         stock_process_price = stock["price"] + stock_to_process["price"]
         if checkStockSum(stock_process_price) is False:
             return stock_recursive(stock, stock_list, final_list)
         stock_process_name = stock["name"] + " " + stock_to_process["name"]
-        stock_process_price = stock["price"] + stock_to_process["price"]
         stock_process_benefits = stock["benefits_two_years"] + stock_to_process["benefits_two_years"]
         stock_process = {
             "final_name": stock_process_name,
@@ -59,8 +62,52 @@ def stock_recursive(stock, stock_list, final_list:None):
         return final_list
 
 
+stock_prices = []
+stock_names = []
+stock_benefits = []
+for stock in all_stock:
+    stock_prices.append(stock["price"])
+    stock_names.append(stock["name"])
+    stock_benefits.append(stock["benefits_two_years"])
 
-for stock_test in all_stock:
-    all_stock_copy = all_stock.copy()
-    process = stock_recursive(stock_test, all_stock_copy, None)
-    print(process)
+
+def sum_stock_recursive(stock_prices, all_combinations=None, combo=0):
+    if combo != 0:
+        print(combo)
+    
+    for i in range (len(stock_prices)):
+        if all_combinations is None:
+            all_combinations = []
+
+        new_combo = combo + stock_prices[i]
+        all_combinations.append(new_combo)
+        remaining_prices = stock_prices[i+1:]
+
+        sum_stock_recursive(remaining_prices, all_combinations, new_combo)    
+    return all_combinations
+
+def name_stock_recursive(stock_names, all_combinations=None, combo=" "):
+    if combo != " ":
+        print(combo)
+    
+    for i in range (len(stock_names)):
+        if all_combinations is None:
+            all_combinations = []
+
+        new_combo = combo + " " + stock_names[i]
+        all_combinations.append(new_combo)
+        remaining_names = stock_names[i+1:]
+
+        sum_stock_recursive(remaining_names, all_combinations, new_combo)    
+    return all_combinations
+
+all_prices = sum_stock_recursive(stock_prices, None,  0)
+all_benefits = sum_stock_recursive(stock_benefits, None, 0)
+all_names = name_stock_recursive(stock_names, None, " ")
+
+all_stocks_processed = []
+for i in range (len(all_names)):
+    stock_processed = {"name": all_names[i], "price": all_prices[i], "benefits": all_benefits[i]}
+    print(stock_processed)
+    all_stocks_processed.append(stock_processed)
+
