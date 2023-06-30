@@ -78,12 +78,12 @@ def name_stock_recursive(stock_names, all_combinations=None, combo=""):
         all_combinations.append(new_combo)
         remaining_names = stock_names[i+1:]
 
-        sum_stock_recursive(remaining_names, all_combinations, new_combo)    
+        name_stock_recursive(remaining_names, all_combinations, new_combo)    
     return all_combinations
 
-all_prices = sum_stock_recursive(stock_prices, None,  0)
-all_benefits = sum_stock_recursive(stock_benefits, None, 0)
-all_names = name_stock_recursive(stock_names, None, "")
+all_prices = sum_stock_recursive(stock_prices)
+all_benefits = sum_stock_recursive(stock_benefits)
+all_names = name_stock_recursive(stock_names)
 
 all_stocks_processed = []
 count = 0 
@@ -92,7 +92,9 @@ for i in range (len(all_names)):
     if checkStockSum(all_prices[i]) is False:
         continue
     stock_processed = {"name": all_names[i], "price": all_prices[i], "benefits": all_benefits[i]}
-    print(stock_processed)
     all_stocks_processed.append(stock_processed)
 
+all_stocks_processed = sorted(all_stocks_processed, key= lambda combination: combination["benefits"], reverse= True)
+
 print(count)
+print(f"and the winner is : {all_stocks_processed[0]}")
