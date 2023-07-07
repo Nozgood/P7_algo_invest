@@ -1,23 +1,23 @@
 import csv 
 import time
 
-CSV_PATH = "./assets/P7_algo_invest_csv.csv"
+CSV_PATH = "./assets/dataset1_Python_P7.csv"
 STOCK_NAME_INDEX = 0
 STOCK_PRICE_INDEX = 1
 STOCK_INTERESTS_INDEX = 2
 
+# TODO: faire les docstring
+
 def bruteforce(path):
     rows = from_csv_to_rows(path)
     rows.pop(0)
-    stocks = []
-    for row in rows:
-        stocks.append(from_row_to_stock(row))
+    stocks = [from_row_to_stock(row) for row in rows]
     start_bruteforce = time.time()
     combination = recursive(stocks)
     end_bruteforce = time.time()
     combination = sorted(combination, key=lambda value: value["benefits"], reverse=True)
     winner = combination[0]
-    time_spend = round(end_bruteforce - start_bruteforce, 2)
+    time_spend = round(end_bruteforce - start_bruteforce,3)
     print(f"the winner is : {winner} and the algorithm tooks {str(time_spend)} seconds to be done")
 
 def from_csv_to_rows(path: str):
@@ -29,17 +29,14 @@ def from_csv_to_rows(path: str):
     return rows
 
 def from_row_to_stock(row: list):
-    raw_interest = int(row[STOCK_INTERESTS_INDEX].split("%")[0])
-    interest = raw_interest / 100
-    benefits = float(row[STOCK_PRICE_INDEX]) * interest
-    return {"name": row[STOCK_NAME_INDEX], "price": row[STOCK_PRICE_INDEX], "interest": interest, "benefits": benefits}
+    return {"name": row[STOCK_NAME_INDEX], "price": row[STOCK_PRICE_INDEX], "benefits": float(row[STOCK_INTERESTS_INDEX])}
 
 def recursive(stocks, combo=None):
     if combo is None:
         combo = {"name": "", "price": 0, "benefits": 0}
     combination = []
     for i in range(len(stocks)):
-        new_price = combo["price"] + int(stocks[i]["price"])
+        new_price = combo["price"] + float(stocks[i]["price"])
         if new_price > 500:
             continue
         new_name = combo["name"] + " " + stocks[i]["name"]
@@ -48,6 +45,5 @@ def recursive(stocks, combo=None):
         combination.append(new_combo)
         combination += recursive(stocks[i+1:], new_combo)
     return combination
-
 
 bruteforce(CSV_PATH)
