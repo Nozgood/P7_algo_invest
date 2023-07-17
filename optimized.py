@@ -57,15 +57,13 @@ def from_row_to_stock(row: list):
 
 def compute_best_combination(budget, stocks):
     number_of_stocks = len(stocks)
-    stocks_combination_matrix = [[0 for _ in range(budget + 1)] for _ in range(number_of_stocks + 1)] # matrice of combination for stock/budget 
-    choiced_stocks_matrix = [[0 for _ in range(budget + 1)] for _ in range(number_of_stocks + 1)] # matrice who store which stock 
+    stocks_combination_matrix = [[0 for _ in range(budget + 1)] for _ in range(number_of_stocks + 1)]
+    choiced_stocks_matrix = [[0 for _ in range(budget + 1)] for _ in range(number_of_stocks + 1)]
 
-    # Build value_matrix[][]
-    # For each stock i will iterate other all the possible values of the budget (from 1 to 500)
     for stock_index in range(1, number_of_stocks + 1):
         stock_to_compute_index = stock_index - 1
         for budget_value in range(budget + 1):
-            if stocks[stock_to_compute_index]["price"] <= budget_value: # if the stock can be bought
+            if stocks[stock_to_compute_index]["price"] <= budget_value:
                 combination_without_new_stock = stocks_combination_matrix[stock_to_compute_index][budget_value]
                 remaining_budget = budget_value - stocks[stock_to_compute_index]["price"]
                 if remaining_budget >= 0:
