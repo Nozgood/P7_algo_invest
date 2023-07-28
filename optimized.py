@@ -50,10 +50,13 @@ def from_row_to_stock(row: list):
     Returns:
         dict: a dictionary with the keys we chose and the values associate to it (key corresponds to the header of each colum of the csv file)
     """
-    price = int(float(row[STOCK_PRICE_INDEX]))
+    price = round(float(row[STOCK_PRICE_INDEX]), 2)
+    print(price)
+    interests = float(row[STOCK_INTERESTS_INDEX])
+    benefits = price * (interests / 100)
     if price < 0:
         return {"name":row[STOCK_NAME_INDEX], "price": 0, "benefits": 0 }
-    return {"name": row[STOCK_NAME_INDEX], "price": (int(float(row[STOCK_PRICE_INDEX]))), "benefits": float(row[STOCK_INTERESTS_INDEX])}
+    return {"name": row[STOCK_NAME_INDEX], "price": price, "benefits": benefits}
 
 def compute_best_combination(budget, stocks):
     number_of_stocks = len(stocks)
