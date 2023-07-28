@@ -55,13 +55,14 @@ def from_row_to_stock(row: list):
     return {"name": row[STOCK_NAME_INDEX], "price": price, "interests": interests, "benefits": benefits}
 
 def process_best_combination(stocks_list: list, budget: int):
-    """process_best_combination receive a list of stocks and returns a dictionary based on the sum of all the stocks in the received list
+    """process_best_combination receive a list of stocks and a budget, sort it by "interest" and add as more as possible in a new dictionary as long as it remains budget
 
     Args:
         stocks_list (list): list of stocks
+        budget (int): an int which represents the budget we have to invest
 
     Returns:
-        dict: the dictionary which represents the sum of all the stocks in the received list
+        dict: the dictionary which represents the best combination of stocks to maximize profits for the given budget
     """
     stocks_list = sorted(stocks_list, key=lambda stock: stock["interests"], reverse=True)
     final_combination = {"name": "", "price": 0, "benefits": 0}
