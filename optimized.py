@@ -1,7 +1,7 @@
 import csv 
 import time
 
-CSV_PATH = "./assets/dataset1_Python_P7.csv"
+CSV_PATH = "./assets/dataset2_Python_P7.csv"
 STOCK_NAME_INDEX = 0
 STOCK_PRICE_INDEX = 1
 STOCK_INTERESTS_INDEX = 2
@@ -16,7 +16,7 @@ def main(path: str):
     """
     rows = from_csv_to_rows(path)
     rows.pop(0)
-    stocks = [from_row_to_stock(row) for row in rows]
+    stocks = [from_row_to_stock(row) for row in rows if float(row[STOCK_PRICE_INDEX]) > 0]
     start_optimized = time.time()
     chosen_stocks = compute_best_combination(INVESTMENT_BUDGET, stocks)
     end_optimized = time.time()
@@ -54,9 +54,7 @@ def from_row_to_stock(row: list):
     print(price)
     interests = float(row[STOCK_INTERESTS_INDEX])
     benefits = price * (interests / 100)
-    if price < 0:
-        return {"name":row[STOCK_NAME_INDEX], "price": 0, "benefits": 0 }
-    return {"name": row[STOCK_NAME_INDEX], "price": price, "benefits": benefits}
+    return {"name": row[STOCK_NAME_INDEX], "price": int(price), "benefits": benefits}
 
 def compute_best_combination(budget, stocks):
     number_of_stocks = len(stocks)
