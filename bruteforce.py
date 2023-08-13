@@ -1,7 +1,7 @@
 import csv 
 import time
 
-CSV_PATH = "./assets/P7_algo_invest_csv.csv"
+CSV_PATH = "./assets/dataset1_Python_P7.csv"
 STOCK_NAME_INDEX = 0
 STOCK_PRICE_INDEX = 1
 STOCK_INTERESTS_INDEX = 2
