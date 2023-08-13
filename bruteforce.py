@@ -52,7 +52,7 @@ def from_row_to_stock(row: list):
     Returns:
         dict: a dictionary with the keys we chose and the values associate to it (key corresponds to the header of each colum of the csv file)
     """
-    raw_interest = int(row[STOCK_INTERESTS_INDEX].split("%")[0])
+    raw_interest = int(row[STOCK_INTERESTS_INDEX])
     interest = raw_interest / 100
     benefits = float(row[STOCK_PRICE_INDEX]) * interest
     return {"name": row[STOCK_NAME_INDEX], "price": row[STOCK_PRICE_INDEX], "interest": interest, "benefits": benefits}
